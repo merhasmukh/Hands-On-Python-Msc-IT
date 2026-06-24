@@ -1,0 +1,60 @@
+{
+  "university": "MSc IT Python Course",
+  "year": 2024,
+  "semester": 1,
+  "students": [
+    {
+      "id": 1,
+      "name": "Alice",
+      "age": 22,
+      "city": "Mumbai",
+      "scores": {
+        "python": 88,
+        "databases": 76,
+        "networks": 82
+      },
+      "active": true
+    },
+    {
+      "id": 2,
+      "name": "Bob",
+      "age": 23,
+      "city": "Delhi",
+      "scores": {
+        "python": 75,
+        "databases": 88,
+        "networks": 70
+      },
+      "active": true
+    },
+    {
+      "id": 3,
+      "name": "Charlie",
+      "age": 21,
+      "city": "Bangalore",
+      "scores": {
+        "python": 92,
+        "databases": 85,
+        "networks": 90
+      },
+      "active": false
+    },
+    {
+      "id": 4,
+      "name": "Diana",
+      "age": 24,
+      "city": "Chennai",
+      "scores": {
+        "python": 65,
+        "databases": 72,
+        "networks": 68
+      },
+      "active": true
+    }
+  ],
+  "courses": ["Python Programming", "Database Management", "Computer Networks"],
+  "coordinator": {
+    "name": "Prof. Kumar",
+    "email": "kumar@university.edu"
+  }
+}

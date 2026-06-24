@@ -1,0 +1,13 @@
+This is a sample text file for the File Handling section.
+It contains multiple lines of text to demonstrate reading files in Python.
+
+Python is a versatile programming language used in:
+- Web Development
+- Data Science
+- Artificial Intelligence
+- Automation
+- Scientific Computing
+
+Line 8: You can read specific lines or the entire file.
+Line 9: Context managers (with statement) ensure files are closed properly.
+Line 10: This is the last line of this sample file.

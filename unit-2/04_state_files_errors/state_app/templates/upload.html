@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload File</title>
+</head>
+<body>
+    <h2>Upload a New File</h2>
+    <!-- enctype MUST be multipart/form-data for file uploads! -->
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" required>
+        <button type="submit">Upload</button>
+    </form>
+    <br>
+    <a href="/">Cancel</a>
+</body>
+</html>

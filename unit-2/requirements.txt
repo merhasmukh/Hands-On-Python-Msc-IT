@@ -1,0 +1,22 @@
+# Unit II — Web Application Development with Flask and Databases
+# Install with: pip install -r requirements.txt
+
+# Notebook / Environment
+jupyter>=1.0.0
+jupyterlab>=4.0.0
+notebook>=7.0.0
+
+# Core Web Framework
+Flask==3.0.3
+
+# Database & ORM
+Flask-SQLAlchemy==3.1.1
+SQLAlchemy==2.0.31
+
+# MySQL Connector (for MySQL examples)
+mysql-connector-python==9.0.0
+PyMySQL==1.1.1
+
+# Utilities
+python-dotenv==1.0.1
+requests==2.32.3
