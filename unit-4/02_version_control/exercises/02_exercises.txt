@@ -1,0 +1,34 @@
+====================================================
+02_exercises.txt — Version Control
+====================================================
+MSc (IT) — Unit 4: Professional Development & DevOps
+
+Instructions:
+Read the scenarios below and write your answers directly in this file.
+
+----------------------------------------------------
+Scenario 1:
+You have just finished writing a new feature in `app.py`.
+What are the two git commands you need to run to stage this file and commit it with the message "Add user login route"?
+
+Your Answer:
+1. 
+2. 
+
+
+----------------------------------------------------
+Scenario 2:
+You want to start working on a new feature for fixing a bug in the database.
+Write the single git command that creates a new branch called `bugfix-db` AND switches you to that branch.
+
+Your Answer:
+[Write your git command here]
+
+
+----------------------------------------------------
+Scenario 3:
+You run `git status` and see that `.env` is listed under "Untracked files".
+You realize you shouldn't commit this file. What exactly should you do to prevent Git from ever tracking the `.env` file?
+
+Your Answer:
+[Write your answer here]

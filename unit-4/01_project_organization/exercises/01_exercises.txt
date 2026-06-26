@@ -1,0 +1,35 @@
+====================================================
+01_exercises.txt — Project Organization
+====================================================
+MSc (IT) — Unit 4: Professional Development & DevOps
+
+Instructions:
+Read the scenarios below and write your answers directly in this file.
+
+----------------------------------------------------
+Scenario 1:
+You are reviewing a classmate's code. You see the following line in `database.py`:
+
+connection_string = "mysql://admin:SuperSecretPass123@remote-server.com/prod_db"
+
+Question: What is wrong with this approach according to the Twelve-Factor App principles, and how would you fix it?
+
+Your Answer:
+[Write your answer here]
+
+
+----------------------------------------------------
+Scenario 2:
+You want to use `python-dotenv` to load variables.
+Write the three lines of Python code required to load a `.env` file and retrieve the value of `API_KEY`.
+
+Your Answer:
+[Write your Python code here]
+
+
+----------------------------------------------------
+Scenario 3:
+Why do we commit `.env.example` to our git repository but add `.env` to our `.gitignore` file?
+
+Your Answer:
+[Write your answer here]

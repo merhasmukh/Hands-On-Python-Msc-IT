@@ -1,0 +1,32 @@
+====================================================
+04_exercises.txt — Deployment Fundamentals
+====================================================
+MSc (IT) — Unit 4: Professional Development & DevOps
+
+Instructions:
+Read the scenarios below and write your answers directly in this file.
+
+----------------------------------------------------
+Scenario 1:
+You have a FastAPI application named `api.py` with the instance `app = FastAPI()`.
+Write the command to run this app in a production environment using Gunicorn as the process manager, with 4 workers, using the Uvicorn worker class.
+
+Your Answer:
+[Write your command here]
+
+
+----------------------------------------------------
+Scenario 2:
+Why do we place Nginx in front of our Python application server (Gunicorn/Uvicorn) instead of exposing Python directly to the internet? List at least two reasons.
+
+Your Answer:
+1. 
+2. 
+
+
+----------------------------------------------------
+Scenario 3:
+What is the difference between WSGI and ASGI? Which one does Flask use, and which one does FastAPI use?
+
+Your Answer:
+[Write your answer here]

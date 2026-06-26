@@ -1,0 +1,35 @@
+====================================================
+05_exercises.txt — Containerization with Docker
+====================================================
+MSc (IT) — Unit 4: Professional Development & DevOps
+
+Instructions:
+Read the scenarios below and write your answers directly in this file.
+
+----------------------------------------------------
+Scenario 1:
+You want to build a Docker image from a Dockerfile in your current directory, and you want to name the image `my-cool-api`.
+Write the Docker command to do this.
+
+Your Answer:
+[Write your command here]
+
+
+----------------------------------------------------
+Scenario 2:
+Look at the following two lines from a Dockerfile:
+COPY . .
+RUN pip install -r requirements.txt
+
+A senior engineer tells you to swap the order of these two lines (and specifically copy `requirements.txt` first). Why is it better for performance to install requirements BEFORE copying the rest of the application code?
+
+Your Answer:
+[Write your answer here]
+
+
+----------------------------------------------------
+Scenario 3:
+What is the primary advantage of using `docker-compose` instead of just running `docker run` multiple times?
+
+Your Answer:
+[Write your answer here]

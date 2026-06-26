@@ -1,0 +1,33 @@
+====================================================
+03_exercises.txt — Linux Essentials
+====================================================
+MSc (IT) — Unit 4: Professional Development & DevOps
+
+Instructions:
+Read the scenarios below and write your answers directly in this file.
+
+----------------------------------------------------
+Scenario 1:
+You want to see the live output of a log file located at `/var/log/syslog` as new lines are being added to it.
+What Linux command would you use?
+
+Your Answer:
+[Write your command here]
+
+
+----------------------------------------------------
+Scenario 2:
+You have downloaded a file named `deploy.sh`, but when you try to run it with `./deploy.sh`, you get a "Permission denied" error.
+Write the Linux command to make this file executable.
+
+Your Answer:
+[Write your command here]
+
+
+----------------------------------------------------
+Scenario 3:
+You need to stop a python server that is running in the background. You use `ps aux | grep python` and find out its Process ID (PID) is `1459`.
+Write the command to gracefully terminate this process.
+
+Your Answer:
+[Write your command here]

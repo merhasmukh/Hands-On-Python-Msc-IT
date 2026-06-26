@@ -1,0 +1,32 @@
+====================================================
+06_exercises.txt — CI/CD
+====================================================
+MSc (IT) — Unit 4: Professional Development & DevOps
+
+Instructions:
+Read the scenarios below and write your answers directly in this file.
+
+----------------------------------------------------
+Scenario 1:
+You want your GitHub Actions workflow to run ONLY when a developer creates a Pull Request to the `main` branch, but NOT when they simply push to their own branch.
+How would you write the `on:` section of your YAML file?
+
+Your Answer:
+[Write the YAML snippet here]
+
+
+----------------------------------------------------
+Scenario 2:
+In the provided `main.yml` sample, what does the `runs-on: ubuntu-latest` line do? Why is this necessary?
+
+Your Answer:
+[Write your answer here]
+
+
+----------------------------------------------------
+Scenario 3:
+You need to pass an API key to your tests so they can connect to an external service. You store it in GitHub Secrets as `EXTERNAL_API_KEY`.
+Write the exact YAML syntax you would use to inject this secret into a step.
+
+Your Answer:
+[Write your answer here]

@@ -1,0 +1,15 @@
+# Unit IV — Professional Development, Deployment and DevOps
+# Install with: pip install -r requirements.txt
+
+# Notebooks
+jupyter>=1.0.0
+jupyterlab>=4.0.0
+
+# API / Web Apps
+fastapi==0.111.0
+uvicorn[standard]==0.30.1
+gunicorn==22.0.0
+pydantic==2.7.4
+
+# Environment & Secrets
+python-dotenv==1.0.1

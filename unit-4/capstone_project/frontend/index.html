@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MSc IT Capstone App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Hello from the Frontend!</h1>
+        <p id="health-status">Checking backend health...</p>
+        
+        <div class="card">
+            <h2>Messages from Database</h2>
+            <ul id="message-list">
+                <!-- Messages will be injected here via JS -->
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>Add a Message</h2>
+            <input type="text" id="new-message" placeholder="Type a message here...">
+            <button onclick="postMessage()">Submit</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

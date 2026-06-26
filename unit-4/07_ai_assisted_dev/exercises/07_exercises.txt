@@ -1,0 +1,33 @@
+====================================================
+07_exercises.txt — AI-Assisted Development
+====================================================
+MSc (IT) — Unit 4: Professional Development & DevOps
+
+Instructions:
+Read the scenarios below and write your answers directly in this file.
+
+----------------------------------------------------
+Scenario 1:
+You want an AI to write a Python function that connects to a SQLite database and fetches all users.
+Write a highly specific, 3-part prompt (Context, Specific Action, Format/Constraints) to get the best result.
+
+Your Prompt:
+[Write your prompt here]
+
+
+----------------------------------------------------
+Scenario 2:
+You are working on a proprietary algorithm for your company that calculates user credit scores. You hit a bug on line 45 where a division by zero occurs in a complex math function.
+Why is it a terrible idea to paste the entire Python file into a public AI tool to ask for help, and what should you do instead?
+
+Your Answer:
+[Write your answer here]
+
+
+----------------------------------------------------
+Scenario 3:
+You used an AI to write a complex Dockerfile for your project. The app builds and runs, but you don't really understand what the commands `ENV`, `WORKDIR`, or `EXPOSE` are doing. 
+What is your ethical/professional responsibility before committing this code to the `main` branch?
+
+Your Answer:
+[Write your answer here]
