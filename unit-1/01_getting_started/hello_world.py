@@ -17,7 +17,7 @@ print("Hello, World!")
 # ---------------------------------------------------------------------------
 student_name = "Alice"
 course = "MSc Information Technology"
-year = 2024
+year = 2026
 
 print(f"Welcome, {student_name}!")
 print(f"You are enrolled in: {course}, Year {year}")
