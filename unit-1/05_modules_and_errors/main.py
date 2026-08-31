@@ -1,0 +1,1 @@
+from practical6.student import get_student_total

@@ -15,3 +15,7 @@ def get_student_data():
         }
         student_data.append(std_dict)
     return student_data
+
+
+def get_student_total(std_data):
+    print("student total function")
