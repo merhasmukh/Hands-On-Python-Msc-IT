@@ -1,11 +1,29 @@
-from flask import Flask
+from flask import Flask,render_template,request, Blueprint
+
+
 
 
 app = Flask(__name__)
 
-@app.route("/")
+
+@app.route("/",methods=['GET','POST'])
 def root():
-    return "<h1> Hello From <br> Flask <h1> "
+    print(request.method)
+    if request.method=='GET':
+        return "Hello From Flask"
+    else:
+        return "Invalid Request"
+
+@app.route("/home")
+def home():
+    name="Vijay"
+    courses=['MCA','BCA','PGDCA','MSc(IT)']
+    return render_template("greet.html",name=name,courses=courses)
+
+@app.route("/root/name/<string:user_name>/user_id/<int:user_id>")
+def hasmukh(user_name):
+    courses=['MCA','BCA','PGDCA','MSc(IT)']
+    return render_template("greet.html",name=user_name,courses=courses)
 
 if __name__=='__main__':
-    app.run()
+    app.run(port=5001,debug=True)

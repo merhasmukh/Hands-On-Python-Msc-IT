@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Greeting {{ name }}</title>
+</head>
+<body>
+    
+    <p>It's nice to meet you. {{ name }}</p>
+
+    {% for c in courses %} 
+    <li>{{ c | title }}</li> 
+    {% endfor %}
+    <a href="/root/name/hasmukh">Back Home</a>
+
+    <a href="{{ url_for('hasmukh',user_name='hasmukh') }}">Go to Home Page</a>
+
+</body>
+</html>
