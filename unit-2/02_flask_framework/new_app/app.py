@@ -1,10 +1,8 @@
 from flask import Flask,render_template,request, Blueprint
-
-
-
+from api_routes import api_bp
 
 app = Flask(__name__)
-
+app.register_blueprint(api_bp,url_prefix="/api")
 
 @app.route("/",methods=['GET','POST'])
 def root():
@@ -24,6 +22,7 @@ def home():
 def hasmukh(user_name):
     courses=['MCA','BCA','PGDCA','MSc(IT)']
     return render_template("greet.html",name=user_name,courses=courses)
+
 
 if __name__=='__main__':
     app.run(port=5001,debug=True)

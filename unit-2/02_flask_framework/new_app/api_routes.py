@@ -1,8 +1,6 @@
-from app import api_bp,app
 from flask import request,Blueprint
 
 api_bp = Blueprint("api", __name__)
-app.register_blueprint(api_bp,url_prefix="/api")
 
 @api_bp.route("/")
 def blueprint_root():
