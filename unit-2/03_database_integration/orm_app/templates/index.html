@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard — Student ORM Portal{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+    <div>
+        <h1 class="page-title">Student Academic Roster</h1>
+        <p class="page-subtitle">Demonstrating Full CRUD Operations with Flask-SQLAlchemy</p>
+    </div>
+    <div class="header-actions">
+        <a href="{{ url_for('seed_data') }}" class="btn btn-secondary" title="Populate database with 5 sample students">🌱 Seed Demo Data</a>
+        <a href="{{ url_for('add_student') }}" class="btn btn-primary">➕ Add New Student</a>
+    </div>
+</div>
+
+<!-- Key Performance Metrics (Aggregations) -->
+<section class="stats-grid">
+    <div class="stat-card">
+        <span class="stat-icon">👥</span>
+        <div class="stat-details">
+            <span class="stat-value">{{ total_students }}</span>
+            <span class="stat-label">Total Students</span>
+        </div>
+    </div>
+    <div class="stat-card">
+        <span class="stat-icon">🏛️</span>
+        <div class="stat-details">
+            <span class="stat-value">{{ total_departments }}</span>
+            <span class="stat-label">Active Departments</span>
+        </div>
+    </div>
+    <div class="stat-card">
+        <span class="stat-icon">📊</span>
+        <div class="stat-details">
+            <span class="stat-value">{{ "%.2f"|format(avg_gpa) if avg_gpa else "0.00" }}</span>
+            <span class="stat-label">Average GPA</span>
+        </div>
+    </div>
+    <div class="stat-card">
+        <span class="stat-icon">⭐</span>
+        <div class="stat-details">
+            <span class="stat-value">{{ honors_count }}</span>
+            <span class="stat-label">Honors (GPA &ge; 3.7)</span>
+        </div>
+    </div>
+</section>
+
+<!-- Filter and Search Bar -->
+<section class="card filter-card">
+    <form method="GET" action="{{ url_for('index') }}" class="search-form">
+        <div class="search-inputs">
+            <input type="text" name="search" placeholder="🔍 Search by name or course..." value="{{ search_query }}" class="form-input">
+            <select name="dept" class="form-select">
+                <option value="">All Departments</option>
+                {% for d in departments %}
+                    <option value="{{ d.id }}" {% if selected_dept == d.id|string %}selected{% endif %}>
+                        {{ d.name }} ({{ d.code }})
+                    </option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn btn-primary">Filter</button>
+            {% if search_query or selected_dept %}
+                <a href="{{ url_for('index') }}" class="btn btn-secondary">Clear</a>
+            {% endif %}
+        </div>
+    </form>
+</section>
+
+<!-- Students Table -->
+<section class="card table-card">
+    {% if students %}
+    <div class="table-responsive">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th style="width: 60px;">ID</th>
+                    <th>Student Details</th>
+                    <th>Department</th>
+                    <th>Course</th>
+                    <th>GPA / Grade</th>
+                    <th>Enrolled</th>
+                    <th style="text-align: right;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for s in students %}
+                <tr>
+                    <td class="text-muted">#{{ s.id }}</td>
+                    <td>
+                        <div class="student-name"><strong>{{ s.name }}</strong></div>
+                        <div class="student-email text-muted">{{ s.email }}</div>
+                    </td>
+                    <td>
+                        <span class="badge badge-dept">{{ s.department.code }}</span>
+                        <span class="dept-subname">{{ s.department.name }}</span>
+                    </td>
+                    <td>{{ s.course }}</td>
+                    <td>
+                        <div class="gpa-pill {% if s.gpa and s.gpa >= 3.7 %}gpa-high{% elif s.gpa and s.gpa >= 3.0 %}gpa-mid{% else %}gpa-low{% endif %}">
+                            {{ "%.2f"|format(s.gpa) if s.gpa else "N/A" }}
+                            {% if s.grade %}<small>({{ s.grade }})</small>{% endif %}
+                        </div>
+                    </td>
+                    <td class="text-muted">{{ s.created_at.strftime('%b %d, %Y') if s.created_at else 'N/A' }}</td>
+                    <td style="text-align: right;">
+                        <div class="action-buttons">
+                            <a href="{{ url_for('edit_student', id=s.id) }}" class="btn-action btn-edit" title="Edit Student">✏️ Edit</a>
+                            <form method="POST" action="{{ url_for('delete_student', id=s.id) }}" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete {{ s.name }}? This will permanently remove them from the database.');">
+                                <button type="submit" class="btn-action btn-delete" title="Delete Student">🗑️ Delete</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <div class="empty-icon">📂</div>
+        <h3>No Student Records Found</h3>
+        <p class="text-muted">
+            {% if search_query or selected_dept %}
+                No students match your filter criteria. Try clearing the search filter!
+            {% else %}
+                The database is currently empty. Get started by adding a student or loading sample demo data.
+            {% endif %}
+        </p>
+        <div class="empty-actions">
+            {% if search_query or selected_dept %}
+                <a href="{{ url_for('index') }}" class="btn btn-secondary">Clear Filters</a>
+            {% else %}
+                <a href="{{ url_for('seed_data') }}" class="btn btn-secondary">🌱 Seed Demo Data</a>
+                <a href="{{ url_for('add_student') }}" class="btn btn-primary">➕ Add First Student</a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

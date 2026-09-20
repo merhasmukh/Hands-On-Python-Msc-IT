@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Student ORM Portal{% endblock %} — MSc IT Flask Lab</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('index') }}" class="nav-brand">
+                <span class="brand-icon">🎓</span>
+                <span class="brand-text">EduPortal <strong>ORM</strong></span>
+            </a>
+            <nav class="nav-links">
+                <a href="{{ url_for('index') }}" class="nav-item">📋 Students</a>
+                <a href="{{ url_for('departments') }}" class="nav-item">🏛️ Departments</a>
+                <a href="{{ url_for('add_student') }}" class="nav-btn">+ Add Student</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Flash Message Notification Banner -->
+    <div class="container message-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        <span class="alert-icon">
+                            {% if category == 'success' %}✅{% elif category == 'danger' %}❌{% elif category == 'warning' %}⚠️{% else %}ℹ️{% endif %}
+                        </span>
+                        <span class="alert-text">{{ message }}</span>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Main Content Area -->
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer with Learning Hints -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <p><strong>MSc (IT) — Hands-On Python: Unit 2, Module 03</strong></p>
+            <p class="footer-hint">💡 <em>Powered by Flask 3 & Flask-SQLAlchemy (SQLite ORM)</em></p>
+        </div>
+    </footer>
+</body>
+</html>

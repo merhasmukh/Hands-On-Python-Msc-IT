@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}Departments — Student ORM Portal{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+    <div>
+        <h1 class="page-title">Academic Departments</h1>
+        <p class="page-subtitle">Demonstrating One-to-Many (1:N) Relational Foreign Keys</p>
+    </div>
+    <div class="header-actions">
+        <a href="{{ url_for('index') }}" class="btn btn-secondary">⬅️ Back to Students</a>
+    </div>
+</div>
+
+<div class="two-column-layout">
+    <!-- Departments List -->
+    <div class="card table-card">
+        <h2 style="margin-bottom: 1rem; font-size: 1.25rem;">Active Departments (Parent Table)</h2>
+        {% if departments %}
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th style="width: 50px;">ID</th>
+                        <th>Code</th>
+                        <th>Department Name</th>
+                        <th style="text-align: center;">Enrolled Students</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for d in departments %}
+                    <tr>
+                        <td class="text-muted">#{{ d.id }}</td>
+                        <td><span class="badge badge-dept">{{ d.code }}</span></td>
+                        <td><strong>{{ d.name }}</strong></td>
+                        <td style="text-align: center;">
+                            <a href="{{ url_for('index', dept=d.id) }}" class="badge badge-count" title="Filter students in this department">
+                                {{ d.students|length }} student{{ 's' if d.students|length != 1 else '' }} &rarr;
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="text-muted">No departments created yet.</p>
+        {% endif %}
+    </div>
+
+    <!-- Quick Add Department Form -->
+    <div class="card form-card">
+        <h2 style="margin-bottom: 1rem; font-size: 1.25rem;">➕ Add Department</h2>
+        <form method="POST" action="{{ url_for('departments') }}">
+            <div class="form-group">
+                <label for="name" class="form-label">Department Name <span class="required">*</span></label>
+                <input type="text" id="name" name="name" class="form-input" placeholder="e.g. Computer Science" required>
+            </div>
+            <div class="form-group">
+                <label for="code" class="form-label">Department Code <span class="required">*</span></label>
+                <input type="text" id="code" name="code" class="form-input" placeholder="e.g. CS" maxlength="10" required>
+                <small class="form-help">Must be unique (e.g., IT, CS, AI, DS)</small>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Create Department</button>
+        </form>
+
+        <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid var(--border-color);">
+
+        <div class="orm-relationship-note">
+            <h4>🔗 Relational Schema Tip</h4>
+            <p>In <code>app.py</code>, this relationship is defined as:</p>
+            <pre><code>class Department(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    # ...
+    students = db.relationship('Student', backref='department', lazy=True)
+
+class Student(db.Model):
+    # ...
+    department_id = db.Column(db.Integer, db.ForeignKey('departments.id'))</code></pre>
+            <p class="text-muted">When you access <code>d.students</code>, SQLAlchemy executes a <code>JOIN</code> or subquery behind the scenes!</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }} — Student ORM Portal{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <div class="card form-card">
+        <div class="form-header">
+            <h2>{{ title }}</h2>
+            <p class="text-muted">
+                {% if student %}
+                    Editing record for <strong>{{ student.name }}</strong> (ID #{{ student.id }})
+                {% else %}
+                    Fill in the fields below to insert a new row into the <code>students</code> table.
+                {% endif %}
+            </p>
+        </div>
+
+        <form method="POST" action="">
+            <!-- Full Name -->
+            <div class="form-group">
+                <label for="name" class="form-label">Full Name <span class="required">*</span></label>
+                <input type="text" id="name" name="name" class="form-input" 
+                       value="{{ student.name if student else '' }}" 
+                       placeholder="e.g. Diya Patel" required>
+                <small class="form-help">Maps to: <code>Student.name (String(100), nullable=False)</code></small>
+            </div>
+
+            <!-- Email Address -->
+            <div class="form-group">
+                <label for="email" class="form-label">Email Address <span class="required">*</span></label>
+                <input type="email" id="email" name="email" class="form-input" 
+                       value="{{ student.email if student else '' }}" 
+                       placeholder="e.g. diya.patel@university.edu" required>
+                <small class="form-help">Maps to: <code>Student.email (String(120), unique=True)</code></small>
+            </div>
+
+            <!-- Department (Foreign Key dropdown) -->
+            <div class="form-group">
+                <label for="department_id" class="form-label">Academic Department <span class="required">*</span></label>
+                <select id="department_id" name="department_id" class="form-select" required>
+                    <option value="" disabled {% if not student %}selected{% endif %}>-- Select Department --</option>
+                    {% for dept in departments %}
+                        <option value="{{ dept.id }}" 
+                            {% if student and student.department_id == dept.id %}selected{% endif %}>
+                            {{ dept.name }} ({{ dept.code }})
+                        </option>
+                    {% endfor %}
+                </select>
+                <small class="form-help">Maps to: <code>Student.department_id (ForeignKey('departments.id'))</code></small>
+            </div>
+
+            <!-- Course -->
+            <div class="form-group">
+                <label for="course" class="form-label">Program / Course <span class="required">*</span></label>
+                <input type="text" id="course" name="course" class="form-input" 
+                       value="{{ student.course if student else '' }}" 
+                       placeholder="e.g. MSc IT — Advanced Python" required>
+                <small class="form-help">Maps to: <code>Student.course (String(100))</code></small>
+            </div>
+
+            <!-- Two column layout for GPA and Grade -->
+            <div class="form-row">
+                <div class="form-group col-half">
+                    <label for="gpa" class="form-label">Grade Point Average (GPA)</label>
+                    <input type="number" id="gpa" name="gpa" step="0.01" min="0.0" max="4.0" class="form-input" 
+                           value="{{ student.gpa if student and student.gpa is not none else '' }}" 
+                           placeholder="0.00 to 4.00">
+                    <small class="form-help">Maps to: <code>Student.gpa (Float)</code></small>
+                </div>
+
+                <div class="form-group col-half">
+                    <label for="grade" class="form-label">Letter Grade</label>
+                    <input type="text" id="grade" name="grade" maxlength="5" class="form-input" 
+                           value="{{ student.grade if student else '' }}" 
+                           placeholder="e.g. A+, A, B">
+                    <small class="form-help">Maps to: <code>Student.grade (String(5))</code></small>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="form-actions">
+                <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-primary">
+                    {% if student %}💾 Save Changes{% else %}➕ Create Student Record{% endif %}
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Architectural Tip Sidebar -->
+    <div class="card help-card">
+        <h3>💡 ORM Teaching Note</h3>
+        <p>When you submit this form, Flask receives form inputs via <code>request.form</code>.</p>
+        <p>Instead of manually constructing an SQL <code>INSERT INTO</code> or <code>UPDATE</code> string, Flask-SQLAlchemy manages the record as a Python object:</p>
+        <pre><code># 1. Create or retrieve Python instance
+student = Student(name=..., dept_id=...)
+
+# 2. Stage changes into SQLAlchemy session
+db.session.add(student)
+
+# 3. Commit the transaction to SQLite
+db.session.commit()</code></pre>
+        <p class="text-muted">This guarantees parameterized security against SQL Injection and automatic type casting!</p>
+    </div>
+</div>
+{% endblock %}
