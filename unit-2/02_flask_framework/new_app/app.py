@@ -1,4 +1,4 @@
-from flask import Flask,render_template,request, Blueprint
+from flask import Flask,render_template,request, Blueprint,jsonify
 from api_routes import api_bp
 
 app = Flask(__name__)
@@ -9,6 +9,16 @@ def root():
     print(request.method)
     if request.method=='GET':
         return "Hello From Flask"
+    else:
+        return "Invalid Request"
+
+@app.route("/search",methods=['GET','POST'])
+def search():
+    print(request.method)
+    if request.method=='POST':
+        data=request.form.get("search_query")
+        print(data)
+        return jsonify({'data':data})
     else:
         return "Invalid Request"
 
