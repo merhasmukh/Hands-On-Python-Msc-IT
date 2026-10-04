@@ -28,6 +28,7 @@ By the end of this unit, you will be able to:
 unit-3/
 ├── README.md                        ← You are here
 ├── requirements.txt                 ← Dependencies
+├── student_app/                     ← 🎓 Simple Student App (FastAPI + SQLite + Swagger UI)
 ├── 01_fastapi_intro/                ← Intro, Sync vs Async, Uvicorn
 ├── 02_building_apis_and_docs/       ← Pydantic, Validation, Swagger UI
 ├── 03_async_programming/            ← async/await deep dive

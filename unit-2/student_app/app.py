@@ -77,7 +77,9 @@ def index():
     students = Student.query.order_by(Student.id.desc()).all()
     total = len(students)
     active_count = sum(1 for s in students if s.is_active)
-    return render_template('index.html', students=students, total=total, active_count=active_count)
+    # Calculate enrollment percentage for the progress bar (e.g. 67%)
+    progress_percent = round((active_count / total * 100)) if total > 0 else 0
+    return render_template('index.html', students=students, total=total, active_count=active_count, progress_percent=progress_percent)
 
 
 # 2. CREATE: Add a new student from the form
