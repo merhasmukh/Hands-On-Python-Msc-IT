@@ -1,81 +1,198 @@
-from fastapi import Depends, FastAPI, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi import FastAPI, HTTPException, Depends, status
+from fastapi.security import OAuth2PasswordBearer
 from pydantic import BaseModel
-import time
+import jwt
+from datetime import datetime, timedelta, timezone
 
-app = FastAPI(title="Auth and Middleware Demo")
 
-# ===========================================================================
-# 1. CORS Middleware Example
-# ===========================================================================
-from fastapi.middleware.cors import CORSMiddleware
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"], # In production, restrict this!
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+app = FastAPI(title="Simple JWT Authentication Demo")
 
-# ===========================================================================
-# 2. Custom Middleware Example
-# ===========================================================================
-from fastapi import Request
-@app.middleware("http")
-async def add_process_time_header(request: Request, call_next):
-    start_time = time.time()
-    response = await call_next(request)
-    process_time = time.time() - start_time
-    # Add a custom header to every response
-    response.headers["X-Process-Time"] = str(process_time)
-    return response
 
-# ===========================================================================
-# 3. Simple JWT / OAuth2 Auth Example
-# ===========================================================================
-# This creates the standard OAuth2 flow that Swagger UI understands
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+# ============================================================
+# JWT Configuration
+# ============================================================
 
-# Mock User Database
-fake_users_db = {
-    "alice": {"username": "alice", "full_name": "Alice Wonderland", "password": "secretpassword"}
-}
+SECRET_KEY = "gggggj6yt6o"
+ALGORITHM = "HS256"
+TOKEN_EXPIRE_MINUTES = 30
+
+
+# OAuth2PasswordBearer reads:
+# Authorization: Bearer <token>
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
+
+
+# ============================================================
+# Fake Database
+# ============================================================
+
+users_db = {}
+
+
+# ============================================================
+# Pydantic Models
+# ============================================================
+
+class UserSignup(BaseModel):
+    username: str
+    password: str
+    full_name: str
+
+
+class UserLogin(BaseModel):
+    username: str
+    password: str
+
 
 class User(BaseModel):
     username: str
-    full_name: str | None = None
-
-# Endpoint to generate a token (Login)
-@app.post("/token")
-def login(form_data: OAuth2PasswordRequestForm = Depends()):
-    user_dict = fake_users_db.get(form_data.username)
-    if not user_dict:
-        raise HTTPException(status_code=400, detail="Incorrect username or password")
-    
-    # In production, use passlib to verify hashed passwords!
-    if form_data.password != user_dict["password"]:
-        raise HTTPException(status_code=400, detail="Incorrect username or password")
-    
-    # Return a fake token (In production, use python-jose to generate a real JWT)
-    return {"access_token": form_data.username, "token_type": "bearer"}
+    full_name: str
 
 
-# A protected dependency
-def get_current_user(token: str = Depends(oauth2_scheme)):
-    # The 'token' here is whatever was passed in the 'Authorization: Bearer <token>' header
-    user_dict = fake_users_db.get(token)
-    if not user_dict:
+# ============================================================
+# 1. SIGNUP
+# ============================================================
+
+@app.post("/signup")
+def signup(user: UserSignup):
+
+    # Check if user already exists
+    if user.username in users_db:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid authentication credentials",
-            headers={"WWW-Authenticate": "Bearer"},
+            status_code=400,
+            detail="Username already exists"
         )
-    return User(**user_dict)
+
+    # Store user
+    # NOTE: Password is stored directly only for classroom demo.
+    # Real applications must hash passwords.
+    users_db[user.username] = {
+        "username": user.username,
+        "password": user.password,
+        "full_name": user.full_name
+    }
+
+    return {
+        "message": "User created successfully",
+        "username": user.username
+    }
 
 
-# Protected Route (Notice the Dependency!)
-@app.get("/users/me", response_model=User)
-def read_users_me(current_user: User = Depends(get_current_user)):
-    return current_user
+# ============================================================
+# 2. LOGIN → GENERATE REAL JWT
+# ============================================================
 
-# Run with: uvicorn app:app --reload
+@app.post("/login")
+def login(user: UserLogin):
+
+    # Find user
+    db_user = users_db.get(user.username)
+
+    if not db_user:
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid username or password"
+        )
+
+    # Check password
+    if user.password != db_user["password"]:
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid username or password"
+        )
+
+    # Token expiration time
+    expire = datetime.now(timezone.utc) + timedelta(
+        minutes=TOKEN_EXPIRE_MINUTES
+    )
+
+    # JWT payload
+    payload = {
+        "sub": user.username,
+        "name": db_user["full_name"],
+        "exp": expire
+    }
+
+    # Generate JWT
+    token = jwt.encode(
+        payload,
+        SECRET_KEY,
+        algorithm=ALGORITHM
+    )
+
+    return {
+        "access_token": token,
+        "token_type": "bearer"
+    }
+
+
+# ============================================================
+# 3. GET CURRENT USER FROM JWT
+# ============================================================
+
+def get_current_user(token: str = Depends(oauth2_scheme)):
+
+    try:
+
+        # Decode JWT
+        payload = jwt.decode(
+            token,
+            SECRET_KEY,
+            algorithms=[ALGORITHM]
+        )
+
+        username = payload.get("sub")
+
+        if username is None:
+            raise HTTPException(
+                status_code=401,
+                detail="Invalid token"
+            )
+
+        # Find user
+        user = users_db.get(username)
+
+        if user is None:
+            raise HTTPException(
+                status_code=401,
+                detail="User not found"
+            )
+
+        return user
+
+    except jwt.ExpiredSignatureError:
+
+        raise HTTPException(
+            status_code=401,
+            detail="Token has expired"
+        )
+
+    except jwt.InvalidTokenError:
+
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid token"
+        )
+
+
+# ============================================================
+# 4. PROTECTED GET API
+# ============================================================
+
+@app.get("/profile")
+def get_profile(
+    current_user: dict = Depends(get_current_user)
+):
+
+    return {
+        "message": "Authentication successful!",
+        "username": current_user["username"],
+        "full_name": current_user["full_name"]
+    }
+
+
+# ============================================================
+# Run
+# ============================================================
+
+# uvicorn app:app --reload
